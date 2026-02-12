@@ -17,12 +17,15 @@
   background-color:#FD8110;
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
+  height:10%;
+  display: flex;
+  justify-content: space-between;
 }
 .middlePanel{
   background-color:#FEE4C5;
   padding: 1rem;
   gap:1rem;
-  flex: 4;
+  flex: 100%;
   display: flex;
   justify-content: center;
 }
@@ -30,6 +33,9 @@
   background-color:#FD8110;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
 }
 
 .buttonsPanel{
@@ -98,10 +104,13 @@
 }
 .solutionTitle{
   background-color: #FD5600;
-  color: white;
+  color: rgb(13, 13, 13);
   padding: 10px;
+  height:10%;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  display: flex;
+  justify-content: space-between;
 }
 .solutionText{
   padding: 10px;
