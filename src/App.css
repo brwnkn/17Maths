@@ -56,7 +56,11 @@
   border-radius: 5px;
   cursor: pointer;
 }
-
+#canvas{
+ height:100%;
+ width:100%;
+ display: block;
+}
 .eraseButton{
   background-color: #FD8F24;
   color: white;
