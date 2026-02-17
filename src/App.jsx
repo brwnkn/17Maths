@@ -1,16 +1,26 @@
 
 import './App.css'
 import { useRef, useEffect, use} from 'react'
+import axios from 'axios'
 
 
 
 function App() {
   const canvasRef = useRef(null);
   const solveRef = useRef(null);
+  const penRef = useRef(null);
+  const eraseRef = useRef(null);
+  const clearRef = useRef(null);
+  const solutionTextRef = useRef(null);
 
   useEffect(() => {
     if (!canvasRef.current) return;
-    const drawingBoard = canvasRef.current
+
+    const drawingBoard = canvasRef.current;
+    const penButton = penRef.current;
+    const eraseButton = eraseRef.current;
+    const clearButton = clearRef.current;
+    const solveButton = solveRef.current;
     const ctx = drawingBoard.getContext('2d');
 
     let isPressed = false;
@@ -62,13 +72,37 @@ function App() {
         }
     });
 
-    solveRef.current.addEventListener('click', () => {
-      console.log("solve button clicked");
+    penButton.addEventListener('click', () => {
+      ctx.globalCompositeOperation = "source-over";
+      ctx.strokeStyle = brushColor;
+      ctx.lineWidth = brushSize * 2
     });
+    clearButton.addEventListener("click", () =>
+    ctx.clearRect(0, 0, drawingBoard.width, drawingBoard.height)
+      );
+
+    eraseButton.addEventListener('click', () => {
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.lineWidth = brushSize * 4;       // eraser size
+      ctx.lineCap = "round";
+    });
+
+    solveButton.addEventListener('click', connectToPython);
 
 
       }, []);
-
+    async function connectToPython(){
+      try{
+        // POST
+          const sent = await axios.post("http://127.0.0.1:5000/api/data", {"image": drawingBoard.toDataURL()});
+        // GET
+          const msg = await axios.get("http://127.0.0.1:5000/api/data");
+          console.log(msg.data.message);
+      }
+      catch (error) {
+        console.error("Error connecting to Python server:", error);
+      }
+    }
 //the UI display part, not related to the drawing logic
   return (
     <div className="App">
@@ -79,13 +113,13 @@ function App() {
 
       <div className = "middlePanel">
         <div className = "buttonsPanel">
-          <button className = "penButton">
+          <button className = "penButton" ref = {penRef}>
             <img src ="pen.svg"></img>
           </button>
-          <button className = "eraseButton">
+          <button className = "eraseButton" ref = {eraseRef}>
             <img src ="clear.svg"></img>
           </button>
-          <button className = "clearButton">
+          <button className = "clearButton" ref = {clearRef}>
             <img src ="trash.svg"></img>
           </button>
           <button className = "solveButton" ref = {solveRef}>
@@ -101,7 +135,7 @@ function App() {
           <div className="solutionTitle"> Solution
            <img src ="solution.svg"></img>
           </div>
-          <h2 className="solutionText">No solution yet</h2>
+          <h2 className="solutionText" ref = {solutionTextRef}>No solution yet</h2>
         </div>
 
       </div>
@@ -112,7 +146,7 @@ function App() {
           
         </div>
         <div className='scrolbar'>
-          <input id="brushSize" type="range" min="1" max="60" />
+          <h2><b><i>brwnkn</i></b></h2>
         </div>
         
       </div>
